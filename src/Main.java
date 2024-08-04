@@ -1,4 +1,15 @@
 import java.util.Random;
+import java.util.Scanner;
+
+
+
+// should not add previously existing snake or ladder , should add all correct ones
+
+
+
+
+
+
 
 public class Main {
 
@@ -12,73 +23,37 @@ public class Main {
     // snake, ladder --->(startpos , endpos)
 
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        System.out.println("Starting the game....................!");
+        Scanner scanner = new Scanner(System.in);
 
-        // setup the grid;
+
+        System.out.println("Enter number of players");
+        int numberOfPlayers = scanner.nextInt();
+
         Grid board = new Grid();
         board.setUp();
 
-       // board.print();
+        for (int i = 0; i < numberOfPlayers; i++) {
+            System.out.println("Enter player name");
+            String pName = scanner.next();
 
+            User player =  new User(pName , 0);
 
-        User user1 = new User("mansi" , Color.YELLOW , 0);
-        User user2 = new User("nehal" , Color.RED , 0);
-
-        int total_players = 2;
-
-        // play the game;
-        int chance = 0;
-        while(true){
-
-            chance = (chance+1) % total_players;
-            int dice = dice_throw();
-
-            if(chance== 0) {
-                int pos = user1.getCurrPos();
-                pos += dice;
-
-                if (pos >= 100) {
-                    System.out.println("YAYYYYY.............Winner is " + user1.getName());
-                    break;
-                }
-
-                int new_pos = board.calculatePosition(pos);
-
-                user1.setCurrPos(new_pos);
-
-                if (new_pos >= 100) {
-                    System.out.println("YAYYYYY.............Winner is " + user1.getName());
-                    break;
-                }
-
-            }else{
-                int pos = user2.getCurrPos();
-                pos += dice;
-
-                if (pos >= 100) {
-                    System.out.println("YAYYYYY.............Winner is " + user2.getName());
-                    break;
-                }
-
-                int new_pos = board.calculatePosition(pos);
-
-                user2.setCurrPos(new_pos);
-
-                if (new_pos >= 100) {
-                    System.out.println("YAYYYYY.............Winner is " + user2.getName());
-                    break;
-                }
-            }
-
-
-
+            board.addPlayers(player);
         }
 
+        board.play();
+
+
+
+
+
+
+        // play the game;
+
+
 
     }
 
-    private static int dice_throw(){
-        Random rand = new Random();
-        return rand.nextInt(6-1+1)+1;
-    }
+
 }

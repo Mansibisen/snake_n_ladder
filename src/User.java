@@ -3,13 +3,13 @@ import java.security.PublicKey;
 public class User {
 
     private  String name;
-    private Color  color;
+
     private int currPos;
 
 
-    public User(String name, Color color, int currPos) {
+    public User(String name, int currPos) {
         this.name = name;
-        this.color = color;
+
         this.currPos = currPos;
     }
 
@@ -21,13 +21,7 @@ public class User {
         this.name = name;
     }
 
-    public Color getColor() {
-        return color;
-    }
 
-    public void setColor(Color color) {
-        this.color = color;
-    }
 
     public int getCurrPos() {
         return currPos;

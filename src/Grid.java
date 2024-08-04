@@ -1,11 +1,14 @@
-import java.util.Random;
-import java.util.Vector;
+import java.util.*;
 
 public class Grid {
 
 
     private final Cell[][] Grid = new Cell[10][10];
+    private Queue<User> players = new ArrayDeque<>();
     Random rand = new Random();
+
+
+
     public  void setUp(){
         for(int i  =0 ;i < 10;i++){
             for(int j  =0 ; j < 10 ; j++){
@@ -13,6 +16,10 @@ public class Grid {
             }
         }
         generateProps();
+    }
+
+    public void addPlayers(User user){
+        players.add(user);
     }
     public void print(){
         for(int i  =0 ;i < 10;i++){
@@ -41,16 +48,16 @@ public class Grid {
 
     }
     private void generateSnakes(int snake_max){
-        System.out.println("snakes");
+       // System.out.println("snakes");
         for(int i =1 ; i <= snake_max ; i++){
             // check validity of start and end
 
             int start = rand.nextInt(100)+1;
-            System.out.println(start);
+            //System.out.println(start);
             int end = rand.nextInt(start-1)+1;
 
 
-            System.out.println(start +".................."+end);
+            //System.out.println(start +".................."+end);
 
             int start_row = (start-1)/10 ;
             int start_col =  (start-1)%10;
@@ -71,13 +78,13 @@ public class Grid {
     }
 
     private void generateLadders( int ladder_max){
-        System.out.println("ladders");
+        //System.out.println("ladders");
         for(int i =1 ; i <= ladder_max ; i++){
             // check validity of start and end
             int start = rand.nextInt(100)+1;
             int end = rand.nextInt(100+1-start)+start;
 
-            System.out.println(start +".................."+end);
+            //System.out.println(start +".................."+end);
 
             int start_row = (start-1)/10 ;
             int start_col =  (start-1)%10;
@@ -99,22 +106,68 @@ public class Grid {
 
     public int calculatePosition(int pos ){
 
-        System.out.println(pos);
+        //System.out.println(pos);
+        if(pos > 100){
+            return 100;
+        }
         int i = (pos-1)/10 ;
         int j =  (pos-1)%10;
 
-        System.out.println(i +"---" + j);
+        //System.out.println(i +"---" + j);
 
 
 
         Cell cell = Grid[i][j];
         int new_pos = cell.calculateCell();
-        System.out.println("new pos" + new_pos);
+        //System.out.println("new pos" + new_pos);
         if(new_pos == -100){
             return pos;
         }
         return new_pos;
 
+
+    }
+    private static int dice_throw(){
+        Random rand = new Random();
+        return rand.nextInt(6-1+1)+1;
+    }
+    public  void play(){
+
+
+        while(true){
+
+            User player = players.poll();
+
+
+            int dice = dice_throw();
+
+            int pos = player.getCurrPos();
+            pos += dice;
+
+            int new_pos = calculatePosition(pos);
+
+            player.setCurrPos(new_pos);
+
+
+
+            if (new_pos >= 100) {
+                System.out.println("YAYYYYY.............Winner is " + player.getName());
+
+            }else{
+                System.out.println("Setting " + player.getName() + "'s new position to " + player.getCurrPos());
+                players.offer(player);
+            }
+
+
+
+            if (players.size() < 2) {
+
+                break;
+            }
+
+
+
+        }
 
     }
 
